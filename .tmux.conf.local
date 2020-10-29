@@ -346,6 +346,8 @@ setw -g allow-rename off
 # F12 切换状态栏开关
 bind-key F12 set-option status
 
+#  使用tmux-resurrect来恢复vim-startify的会话
+set -g @resurrect-processes '"nvim->nvim +SLoad"'
 
 # 开启256色支持
 set -g default-terminal "screen-256color"
