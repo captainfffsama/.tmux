@@ -323,13 +323,40 @@ set -g @tpm_plugins '          \
    tmux-plugins/tpm             \
    tmux-plugins/tmux-sensible   \
    tmux-plugins/tmux-resurrect  \
+   tmux-plugins/tmux-continuum  \
    tmux-plugins/tmux-open      \
    tmux-plugins/tmux-yank      \
    #christoomey/vim-tmux-navigator \
+   sainnhe/tmux-translator     \
 '
+set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+set -g @plugin 'tmux-plugins/tmux-net-speed'
+set -g @plugin 'samoshkin/tmux-plugin-sysstat' # `sysstat_ntemp` and `sysstat_itemp` are temperatures of nvidia card and intel card, these scripts are available in my fork: https://github.com/sainnhe/tmux-plugin-sysstat
 set -g @resurrect-processes 'ssh'
 set -g @resurrect-capture-pane-contents 'on' # 开启恢复面板内容功能
 set -g @resurrect-save-shell-history 'on'
+
+# >>> tmux translator <<<==========================
+# 触发划词翻译的键
+set -g @tmux-translator "t"
+
+# 浮动窗口宽度
+set -g @tmux-translator-width "38%"
+
+# 浮动窗口高度
+set -g @tmux-translator-height "38%"
+
+# 从什么语言翻译
+set -g @tmux-translator-from "en"
+
+# 翻译到什么语言
+set -g @tmux-translator-to "zh"
+
+# 翻译引擎
+set -g @tmux-translator-engine "google"
+# 多个翻译引擎
+set -g @tmux-translator-engine "google|ciba|youdao|baidu|azure"
+
 # 为了能用vim-tmux-clipboard
 set-option -g focus-events on
 
@@ -352,6 +379,7 @@ set -g @resurrect-processes '"nvim->nvim +SLoad"'
 # 开启256色支持
 set -g default-terminal "screen-256color"
 # Other examples:
+unbind-key -T copy-mode-vi MouseDragEnd1Pane
 # set -g @plugin 'github_username/plugin_name'
 # set -g @plugin 'git@github.com:user/plugin'
 # set -g @plugin 'git@bitbucket.com:user/plugin'
