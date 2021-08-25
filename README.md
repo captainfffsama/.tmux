@@ -10,7 +10,7 @@ Installation
 
 Requirements:
 
-  - tmux **`>= 2.1`** (soon `>= 2.4`) running inside Linux, Mac, OpenBSD, Cygwin
+  - tmux **`>= 2.3`** (soon `>= 2.4`) running inside Linux, Mac, OpenBSD, Cygwin
     or WSL
   - awk, perl and sed
   - outside of tmux, `$TERM` must be set to `xterm-256color`
@@ -32,7 +32,7 @@ your home directory:
 ```
 $ git clone https://github.com/gpakosz/.tmux.git /path/to/oh-my-tmux
 $ ln -s -f /path/to/oh-my-tmux/.tmux.conf ~/.tmux.conf
-$ cp /path/t/oh-my-tmux/.tmux.conf.local ~/.tmux.conf.local
+$ cp /path/to/oh-my-tmux/.tmux.conf.local ~/.tmux.conf.local
 ```
 
 Then proceed to [customize] your `~/.tmux.conf.local` copy.
@@ -109,12 +109,12 @@ Features
    if available
  - laptop battery status line information
  - uptime status line information
- - optional highlight of focused pane (tmux `>= 2.1`)
+ - optional highlight of focused pane
  - configurable new windows and panes behavior (optionally retain current path)
  - SSH/Mosh aware split pane (reconnects to remote server)
  - copy to OS clipboard (needs [`reattach-to-user-namespace`][reattach-to-user-namespace]
    on macOS, `xsel` or `xclip` on Linux)
- - support for 4-digit hexadecimal Unicode characters (requires `perl` or Bash >= 4.1.2)
+ - support for 4-digit hexadecimal Unicode characters
  - [Facebook PathPicker][] integration if available
  - [Urlview][] integration if available
 
@@ -202,10 +202,10 @@ customize it further to your needs. Instead of altering the `~/.tmux.conf` file
 and diverging from upstream, the proper way is to edit the `~/.tmux.conf.local`
 file.
 
-Please refer to the default `~/.tmux.conf.local` file to know more about
-variables you can adjust to alter different behaviors. Pressing `<prefix> e`
-will open `~/.tmux.conf.local` with the editor defined by the `$EDITOR`
-environment variable (defaults to `vim` when empty).
+Please refer to the sample `.tmux.conf.local` file to know more about variables
+you can adjust to alter different behaviors. Pressing `<prefix> e` will open
+`~/.tmux.conf.local` with the editor defined by the `$EDITOR` environment
+variable (defaults to `vim` when empty).
 
 ### Enabling the Powerline look
 
@@ -231,8 +231,8 @@ To make use of these symbols, there are several options:
 
 Please see the [Powerline manual] for further details.
 
-Then edit the `~/.tmux.conf.local` file (`<prefix> e`) and adjust the following
-variables:
+Then edit your `~/.tmux.conf.local` copy (with `<prefix> e`) and adjust the
+following variables:
 
 ```
 tmux_conf_theme_left_separator_main='\uE0B0'
@@ -245,7 +245,7 @@ tmux_conf_theme_right_separator_sub='\uE0B3'
 Contrary to the first iterations of this configuration, by now you have total
 control on the content and order of `status-left` and `status-right`.
 
-Edit the `~/.tmux.conf.local` file (`<prefix> e`) and adjust the
+Edit your `~/.tmux.conf.local` copy (`<prefix> e`) and adjust the
 `tmux_conf_theme_status_left` and `tmux_conf_theme_status_right` variables to
 your own preferences.
 
@@ -287,6 +287,9 @@ minutes whatever the value of `status-interval`.
 
 [wttr.in]: https://github.com/chubin/wttr.in#one-line-output
 
+💡 You can also define your own custom variables. See the sample
+`.tmux.conf.local` file for instructions.
+
 Finally, remember `tmux_conf_theme_status_left` and
 `tmux_conf_theme_status_right` end up being given to tmux as `status-left` and
 `status-right` which means they're passed through `strftime()`. As such, the `%`
@@ -296,7 +299,23 @@ tmux_conf_theme_status_right='#(echo foo %% bar)'
 ```
 See `man 3 strftime`.
 
-### Accessing the macOS clipboard from within tmux sessions
+### Using TPM plugins
+
+This configuration now comes with built-in [TPM] support:
+- use the `set -g @plugin ...` syntax to enable a plugin
+- whenever a plugin introduces a variable to be used in `status-left` or
+  `status-right`, you can use it in `tmux_conf_theme_status_left` and
+  `tmux_conf_theme_status_right` variables, see instructions above 👆
+- ⚠️ do not add `set -g @plugin 'tmux-plugins/tpm'`
+- ⚠️ do not add `run '~/.tmux/plugins/tpm/tpm'` to `~/.tmux.conf` or your
+- `~/.tmux.conf.local` copy ← people who are used to alter
+  `.tmux.conf` to add TPM support will have to adapt their configuration
+
+See `~/.tmux.conf.local` for instructions.
+
+[TPM]: https://github.com/tmux-plugins/tpm
+
+### Accessing the macOS clipboard from within tmux sessions (tmux `< 2.6`)
 
 [Chris Johnsen created the `reattach-to-user-namespace`
 utility][reattach-to-user-namespace] that makes `pbcopy` and `pbpaste` work
