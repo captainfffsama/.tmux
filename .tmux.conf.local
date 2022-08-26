@@ -161,7 +161,6 @@ tmux_conf_theme_terminal_title="#h ❐ #S ● #I #W"
 #     - #{username_ssh}
 tmux_conf_theme_window_status_fg='#8a8a8a'              # light gray
 tmux_conf_theme_window_status_bg='#080808'              # dark gray
-#tmux_conf_theme_window_status_bg='#7b7b7b'
 tmux_conf_theme_window_status_attr='none'
 tmux_conf_theme_window_status_format='#I #W'
 #tmux_conf_theme_window_status_format='#{circled_window_index} #W'
@@ -455,6 +454,9 @@ tmux_conf_uninstall_plugins_on_reload=true
 #bind-key -T copy-mode-vi 'C-l' select-pane -R
 #bind-key -T copy-mode-vi 'C-\' select-pane -l
 # List of plugins
+# 开启x11 参考https://unix.stackexchange.com/questions/146631/in-tmux-session-cannot-connect-to-x-server-after-sshing
+set-option -g update-environment "SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY"
+
 set -g @tpm_plugins '          \
    tmux-plugins/tpm             \
    tmux-plugins/tmux-sensible   \
@@ -462,15 +464,17 @@ set -g @tpm_plugins '          \
    tmux-plugins/tmux-continuum  \
    tmux-plugins/tmux-open      \
    tmux-plugins/tmux-yank      \
-   #christoomey/vim-tmux-navigator \
    sainnhe/tmux-translator     \
+   samoshkin/tmux-plugin-sysstat  \
+   tmux-plugins/tmux-prefix-highlight  \
+   tmux-plugins/tmux-net-speed  \
+
 '
-set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-set -g @plugin 'tmux-plugins/tmux-net-speed'
-set -g @plugin 'samoshkin/tmux-plugin-sysstat' # `sysstat_ntemp` and `sysstat_itemp` are temperatures of nvidia card and intel card, these scripts are available in my fork: https://github.com/sainnhe/tmux-plugin-sysstat
+# `sysstat_ntemp` and `sysstat_itemp` are temperatures of nvidia card and intel card, these scripts are available in my fork: https://github.com/sainnhe/tmux-plugin-sysstat
 set -g @resurrect-processes 'ssh'
 set -g @resurrect-capture-pane-contents 'on' # 开启恢复面板内容功能
-set -g @resurrect-save-shell-history 'on'
+# set -g @resurrect-save-shell-history 'on'
+set -g @continuum-restore 'on'
 
 # >>> tmux translator <<<==========================
 # 触发划词翻译的键
@@ -496,8 +500,6 @@ set -g @tmux-translator-engine "google|ciba|youdao|baidu|azure"
 # 为了能用vim-tmux-clipboard
 set-option -g focus-events on
 
-
-
 # 兼容neovim显示
 #set-option -sa terminal-overrides ',xterm-256color:RGB'
 set-option -ga terminal-overrides ',xterm-256color:Tc'
@@ -510,7 +512,7 @@ setw -g allow-rename off
 bind-key F12 set-option status
 
 #  使用tmux-resurrect来恢复vim-startify的会话
-set -g @resurrect-processes '"nvim->nvim +SLoad"'
+# set -g @resurrect-processes '"nvim->nvim +SLoad"'
 
 # 开启256色支持
 set -g default-terminal "screen-256color"
